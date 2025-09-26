@@ -1,49 +1,35 @@
 import streamlit as st
 import openai
-from config import lyd_urls
 
+# 🔐 Hent API-nøkkel fra Streamlit Secrets
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
-
 def hent_ai_variant(pausetype):
-    """Genererer en ny pauseinstruksjon basert på valgt type."""
-    prompt = f"""
-    Gi en kort og konkret instruksjon for en mikropause av typen '{pausetype}'.
-    Den skal være litt annerledes enn standardversjonen, men fortsatt enkel og rolig.
-    Maks 2 setninger. Skriv på norsk.
-    """
-    try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messages=[{"role": "user", "content": prompt}],
-            temperature=0.7
-        )
-        return response.choices[0].message.content.strip()
-        hent_ai_anbefaling = hent_ai_variant
-    except Exception as e:
-        return "🧘 Ta en kort pause. (AI-feil)"
+    """Returnerer AI-generert instruksjon basert på valgt pausetype."""
+    prompt = f"Gi en kort, vennlig instruksjon for en mikropause med fokus på {pausetype.lower()}."
+    response = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0.7,
+        max_tokens=100
+    )
+    return response.choices[0].message.content.strip()
 
-def spill_autolyd(url):
-    if url:
-        html = f"""
+def spill_autolyd(lydfil_url):
+    """Spiller av lyd automatisk via HTML."""
+    st.markdown(
+        f"""
         <audio autoplay>
-            <source src="{url}" type="audio/mp3">
+            <source src="{lydfil_url}" type="audio/mpeg">
         </audio>
-        <script>
-            window.scrollTo({{ top: document.body.scrollHeight, behavior: 'smooth' }});
-        </script>
-        """
-        st.markdown(html, unsafe_allow_html=True)
-    else:
-        st.warning("🔇 Lydfil mangler eller URL er tom.")
+        """,
+        unsafe_allow_html=True
+    )
 
-def vis_pausekort(valg, ikon_url):
-    st.markdown("---")
-    st.markdown('<div class="pausekort">', unsafe_allow_html=True)
-    st.markdown(f'<img src="{ikon_url}" class="ikon"> <span class="pausevalg">{valg}</span>', unsafe_allow_html=True)
-
-    instruksjon = hent_ai_variant(valg)
-    st.markdown(instruksjon)
-    spill_autolyd(lyd_urls.get(valg))
-
-    st.markdown('</div>', unsafe_allow_html=True)
+def vis_pausekort(pausetype, ikon_url):
+    """Viser pausekort med ikon, AI-instruksjon og lyd."""
+    st.image(ikon_url, width=100)
+    instruksjon = hent_ai_variant(pausetype)
+    st.markdown(f"### {instruksjon}")
+    lyd_url = f"https://torbkle.github.io/mikropause-assets/audio/{pausetype.lower()}.mp3"
+    spill_autolyd(lyd_url)

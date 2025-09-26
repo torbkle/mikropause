@@ -1,7 +1,6 @@
 import streamlit as st
 from ui import sett_stil, vis_header
-from logic import hent_ai_variant, vis_pausekort  # ✅ riktig
-
+from logic import hent_ai_variant, vis_pausekort  # ✅ riktig import
 from data import vis_statistikk
 from i18n import hent_tekst
 from config import ikon_urls
@@ -14,13 +13,12 @@ vis_header()
 språk = st.selectbox("Språk / Language", ["Norsk", "English"])
 tekst = hent_tekst(språk)
 
-# 🤖 AI-basert anbefaling
-st.info(hent_ai_variant())
-
-
 # 🧘 Pausevalg
 st.markdown(f"### {tekst['valg']}")
 valg = st.radio("", ["Pust", "Skjermpause", "Fokus", "Bevegelse"], label_visibility="collapsed")
+
+# 🤖 AI-basert anbefaling
+st.info(hent_ai_variant(valg))  # ✅ sender inn valgt pausetype
 
 # ▶️ Start pause
 if st.button(tekst["start"]):

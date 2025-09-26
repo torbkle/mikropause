@@ -1,7 +1,6 @@
 import streamlit as st
 import datetime
 
-# Konfigurasjon
 st.set_page_config(page_title="Mikropause", page_icon="🧘", layout="centered")
 
 # Stil
@@ -31,7 +30,7 @@ st.markdown("""
 st.title("🧘 Mikropause")
 st.subheader("Pustepauser for et klarere hode")
 
-# AI-anbefaling (simulert)
+# AI-anbefaling
 hour = datetime.datetime.now().hour
 if hour < 11:
     anbefaling = "🌅 Start dagen med en rolig pustepause"
@@ -43,13 +42,9 @@ st.info(anbefaling)
 
 # Pausevalg
 st.markdown("### Velg type mikropause:")
-pausevalg = st.radio(
-    "",
-    ["🫁 Pust", "👀 Skjermpause", "🔕 Fokus", "🧍‍♂️ Bevegelse"],
-    label_visibility="collapsed"
-)
+pausevalg = st.radio("", ["🫁 Pust", "👀 Skjermpause", "🔕 Fokus", "🧍‍♂️ Bevegelse"], label_visibility="collapsed")
 
-# Eksterne ikoner via GitHub CDN
+# Ikoner og lydstier
 ikon_urls = {
     "Pust": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/wind.svg",
     "Skjermpause": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/eye-off.svg",
@@ -57,7 +52,14 @@ ikon_urls = {
     "Bevegelse": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/stretch-horizontal.svg"
 }
 
-# Pausekort
+lyd_urls = {
+    "Pust": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/audio/pust.mp3",
+    "Skjermpause": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/audio/skjermpause.mp3",
+    "Fokus": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/audio/fokus.mp3",
+    "Bevegelse": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/audio/bevegelse.mp3"
+}
+
+# Pausekort med lyd
 if st.button("Start pause"):
     st.markdown("---")
     st.markdown('<div class="pausekort">', unsafe_allow_html=True)
@@ -65,19 +67,23 @@ if st.button("Start pause"):
     if "Pust" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Pust"]}" class="ikon"> <span class="pausevalg">Pustepause</span>', unsafe_allow_html=True)
         st.markdown("🫁 Pust inn i 4 sekunder, hold i 4, pust ut i 6. Gjenta i 1 minutt.")
+        st.audio(lyd_urls["Pust"])
     elif "Skjermpause" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Skjermpause"]}" class="ikon"> <span class="pausevalg">Skjermpause</span>', unsafe_allow_html=True)
         st.markdown("👀 Se ut av vinduet i 60 sekunder. La øynene hvile.")
+        st.audio(lyd_urls["Skjermpause"])
     elif "Fokus" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Fokus"]}" class="ikon"> <span class="pausevalg">Fokuspause</span>', unsafe_allow_html=True)
         st.markdown("🔕 Lukk alle faner. Sett en intensjon for neste oppgave.")
+        st.audio(lyd_urls["Fokus"])
     elif "Bevegelse" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Bevegelse"]}" class="ikon"> <span class="pausevalg">Bevegelsespause</span>', unsafe_allow_html=True)
         st.markdown("🧍‍♂️ Strekk armene over hodet og rull skuldrene. 3 ganger.")
+        st.audio(lyd_urls["Bevegelse"])
 
     st.markdown('</div>', unsafe_allow_html=True)
 
-# Statistikk (simulert)
+# Statistikk
 st.markdown("---")
 st.subheader("📊 Dagens pauser")
 col1, col2 = st.columns(2)

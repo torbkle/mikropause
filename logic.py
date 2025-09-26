@@ -26,7 +26,7 @@ def hent_ai_variant(pausetype):
     except Exception:
         return fallback_instruksjoner.get(pausetype, "Ta en kort pause og pust dypt.")
 
-    def spill_autolyd(lydfil_url):
+  def spill_autolyd(lydfil_url):
     """Spiller av lyd automatisk med synlig spiller og JS fallback."""
     st.markdown(
         f"""

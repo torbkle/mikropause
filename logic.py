@@ -38,9 +38,18 @@ def spill_autolyd(lydfil_url):
     )
 
 def vis_pausekort(pausetype, ikon_url):
-    """Viser pausekort med ikon, instruksjon og lyd."""
+    """Viser pausekort med ikon, AI-instruksjon (eller fallback) og spiller lyd uansett."""
     st.image(ikon_url, width=100)
-    instruksjon = hent_ai_variant(pausetype)
+
+    # 🎯 Prøv å hente AI-instruksjon, ellers bruk fallback
+    try:
+        instruksjon = hent_ai_variant(pausetype)
+    except Exception:
+        instruksjon = fallback_instruksjoner.get(pausetype, "Ta en kort pause og pust dypt.")
+
     st.markdown(f"### {instruksjon}")
+
+    # 🔊 Spill lyd uansett
     lyd_url = f"https://torbkle.github.io/mikropause-assets/audio/{pausetype.lower()}.mp3"
     spill_autolyd(lyd_url)
+

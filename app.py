@@ -1,5 +1,6 @@
 import streamlit as st
 import datetime
+import requests
 
 st.set_page_config(page_title="Mikropause", page_icon="🧘", layout="centered")
 
@@ -44,7 +45,7 @@ st.info(anbefaling)
 st.markdown("### Velg type mikropause:")
 pausevalg = st.radio("", ["🫁 Pust", "👀 Skjermpause", "🔕 Fokus", "🧍‍♂️ Bevegelse"], label_visibility="collapsed")
 
-# Eksterne ikoner og lydfiler via GitHub CDN
+# Ikoner og lydfiler via GitHub CDN
 ikon_urls = {
     "Pust": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/wind.svg",
     "Skjermpause": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/eye-off.svg",
@@ -59,7 +60,17 @@ lyd_urls = {
     "Bevegelse": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/audio/bevegelse.mp3"
 }
 
-# Pausekort med lyd
+def spill_lyd(url):
+    try:
+        response = requests.head(url)
+        if response.status_code == 200:
+            st.audio(url)
+        else:
+            st.warning("🔇 Lydfilen kunne ikke lastes. Prøv igjen senere.")
+    except Exception:
+        st.warning("🔇 Lydstøtte er ikke tilgjengelig akkurat nå.")
+
+# Pausekort med lyd og fallback
 if st.button("Start pause"):
     st.markdown("---")
     st.markdown('<div class="pausekort">', unsafe_allow_html=True)
@@ -67,19 +78,19 @@ if st.button("Start pause"):
     if "Pust" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Pust"]}" class="ikon"> <span class="pausevalg">Pustepause</span>', unsafe_allow_html=True)
         st.markdown("🫁 Pust inn i 4 sekunder, hold i 4, pust ut i 6. Gjenta i 1 minutt.")
-        st.audio(lyd_urls["Pust"])
+        spill_lyd(lyd_urls["Pust"])
     elif "Skjermpause" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Skjermpause"]}" class="ikon"> <span class="pausevalg">Skjermpause</span>', unsafe_allow_html=True)
         st.markdown("👀 Se ut av vinduet i 60 sekunder. La øynene hvile.")
-        st.audio(lyd_urls["Skjermpause"])
+        spill_lyd(lyd_urls["Skjermpause"])
     elif "Fokus" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Fokus"]}" class="ikon"> <span class="pausevalg">Fokuspause</span>', unsafe_allow_html=True)
         st.markdown("🔕 Lukk alle faner. Sett en intensjon for neste oppgave.")
-        st.audio(lyd_urls["Fokus"])
+        spill_lyd(lyd_urls["Fokus"])
     elif "Bevegelse" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Bevegelse"]}" class="ikon"> <span class="pausevalg">Bevegelsespause</span>', unsafe_allow_html=True)
         st.markdown("🧍‍♂️ Strekk armene over hodet og rull skuldrene. 3 ganger.")
-        st.audio(lyd_urls["Bevegelse"])
+        spill_lyd(lyd_urls["Bevegelse"])
 
     st.markdown('</div>', unsafe_allow_html=True)
 

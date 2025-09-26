@@ -3,6 +3,7 @@ import openai
 from config import lyd_urls
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
+hent_ai_anbefaling = hent_ai_variant
 
 def hent_ai_variant(pausetype):
     """Genererer en ny pauseinstruksjon basert på valgt type."""

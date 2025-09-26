@@ -44,7 +44,7 @@ st.info(anbefaling)
 st.markdown("### Velg type mikropause:")
 pausevalg = st.radio("", ["🫁 Pust", "👀 Skjermpause", "🔕 Fokus", "🧍‍♂️ Bevegelse"], label_visibility="collapsed")
 
-# Ikoner og lydstier
+# Eksterne ikoner og lydfiler via GitHub CDN
 ikon_urls = {
     "Pust": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/wind.svg",
     "Skjermpause": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/eye-off.svg",

@@ -4,44 +4,78 @@ import datetime
 # Konfigurasjon
 st.set_page_config(page_title="Mikropause", page_icon="🧘", layout="centered")
 
+# Stil
+st.markdown("""
+    <style>
+    .pausekort {
+        background-color: #F1F8F9;
+        padding: 20px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .ikon {
+        width: 40px;
+        vertical-align: middle;
+        margin-right: 10px;
+    }
+    .pausevalg {
+        font-size: 18px;
+        font-weight: 500;
+        color: #005F73;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 # Header
 st.title("🧘 Mikropause")
 st.subheader("Pustepauser for et klarere hode")
 
 # AI-anbefaling (simulert)
-now = datetime.datetime.now()
-hour = now.hour
-
+hour = datetime.datetime.now().hour
 if hour < 11:
     anbefaling = "🌅 Start dagen med en rolig pustepause"
 elif hour < 15:
     anbefaling = "🧠 Ta en skjermpause for å bevare fokus"
 else:
     anbefaling = "🌇 Avslutt dagen med en mikrobevegelse"
-
 st.info(anbefaling)
 
-# Pausevalg
+# Pausevalg med ikoner
 st.markdown("### Velg type mikropause:")
-pausevalg = st.radio("", ["🫁 Pust", "👀 Skjermpause", "🔕 Fokus", "🧍‍♂️ Bevegelse"])
 
-# Start pause
+pausevalg = st.radio(
+    "",
+    ["🫁 Pust", "👀 Skjermpause", "🔕 Fokus", "🧍‍♂️ Bevegelse"],
+    label_visibility="collapsed"
+)
+
+# Vis pausekort
 if st.button("Start pause"):
     st.markdown("---")
+    st.markdown('<div class="pausekort">', unsafe_allow_html=True)
+
     if "Pust" in pausevalg:
-        st.markdown("🫁 **Pust inn i 4 sekunder, hold i 4, pust ut i 6.** Gjenta i 1 minutt.")
+        st.markdown('<img src="assets/icons/wind.svg" class="ikon"> <span class="pausevalg">Pustepause</span>', unsafe_allow_html=True)
+        st.markdown("🫁 Pust inn i 4 sekunder, hold i 4, pust ut i 6. Gjenta i 1 minutt.")
     elif "Skjermpause" in pausevalg:
-        st.markdown("👀 **Se ut av vinduet i 60 sekunder.** La øynene hvile.")
+        st.markdown('<img src="assets/icons/eye-off.svg" class="ikon"> <span class="pausevalg">Skjermpause</span>', unsafe_allow_html=True)
+        st.markdown("👀 Se ut av vinduet i 60 sekunder. La øynene hvile.")
     elif "Fokus" in pausevalg:
-        st.markdown("🔕 **Lukk alle faner. Sett en intensjon for neste oppgave.**")
+        st.markdown('<img src="assets/icons/target.svg" class="ikon"> <span class="pausevalg">Fokuspause</span>', unsafe_allow_html=True)
+        st.markdown("🔕 Lukk alle faner. Sett en intensjon for neste oppgave.")
     elif "Bevegelse" in pausevalg:
-        st.markdown("🧍‍♂️ **Strekk armene over hodet og rull skuldrene.** 3 ganger.")
+        st.markdown('<img src="assets/icons/stretch-horizontal.svg" class="ikon"> <span class="pausevalg">Bevegelsespause</span>', unsafe_allow_html=True)
+        st.markdown("🧍‍♂️ Strekk armene over hodet og rull skuldrene. 3 ganger.")
+
+    st.markdown('</div>', unsafe_allow_html=True)
 
 # Statistikk (simulert)
 st.markdown("---")
 st.subheader("📊 Dagens pauser")
-st.metric("Antall pauser", "3")
-st.metric("Total pausetid", "6 minutter")
+col1, col2 = st.columns(2)
+col1.metric("Antall pauser", "3")
+col2.metric("Total pausetid", "6 minutter")
 
 # Footer
 st.markdown("---")

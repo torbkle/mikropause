@@ -1,19 +1,27 @@
 import streamlit as st
-import datetime
+import openai
 from config import lyd_urls
 
-def hent_ai_anbefaling():
-    """Gir en enkel anbefaling basert på tidspunkt på dagen."""
-    hour = datetime.datetime.now().hour
-    if hour < 11:
-        return "🌅 Start dagen med en rolig pustepause"
-    elif hour < 15:
-        return "🧠 Ta en skjermpause for å bevare fokus"
-    else:
-        return "🌇 Avslutt dagen med en mikrobevegelse"
+openai.api_key = st.secrets["OPENAI_API_KEY"]
+
+def hent_ai_variant(pausetype):
+    """Genererer en ny pauseinstruksjon basert på valgt type."""
+    prompt = f"""
+    Gi en kort og konkret instruksjon for en mikropause av typen '{pausetype}'.
+    Den skal være litt annerledes enn standardversjonen, men fortsatt enkel og rolig.
+    Maks 2 setninger. Skriv på norsk.
+    """
+    try:
+        response = openai.ChatCompletion.create(
+            model="gpt-3.5-turbo",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.7
+        )
+        return response.choices[0].message.content.strip()
+    except Exception as e:
+        return "🧘 Ta en kort pause. (AI-feil)"
 
 def spill_autolyd(url):
-    """Spiller av lyd automatisk via HTML. Ingen HEAD-sjekk – mer stabilt."""
     if url:
         html = f"""
         <audio autoplay>
@@ -28,18 +36,12 @@ def spill_autolyd(url):
         st.warning("🔇 Lydfil mangler eller URL er tom.")
 
 def vis_pausekort(valg, ikon_url):
-    """Viser pausekort med instruksjon og automatisk lyd."""
     st.markdown("---")
     st.markdown('<div class="pausekort">', unsafe_allow_html=True)
-
-    instruksjoner = {
-        "Pust": "🫁 Pust inn i 4 sekunder, hold i 4, pust ut i 6.",
-        "Skjermpause": "👀 Se ut av vinduet i 60 sekunder.",
-        "Fokus": "🔕 Lukk alle faner. Sett en intensjon.",
-        "Bevegelse": "🧍‍♂️ Strekk armene og rull skuldrene."
-    }
-
     st.markdown(f'<img src="{ikon_url}" class="ikon"> <span class="pausevalg">{valg}</span>', unsafe_allow_html=True)
-    st.markdown(instruksjoner.get(valg, "🧘 Ta en kort pause."))
+
+    instruksjon = hent_ai_variant(valg)
+    st.markdown(instruksjon)
     spill_autolyd(lyd_urls.get(valg))
+
     st.markdown('</div>', unsafe_allow_html=True)

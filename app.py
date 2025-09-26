@@ -1,6 +1,7 @@
 import streamlit as st
 from ui import sett_stil, vis_header
-from logic import hent_ai_anbefaling, vis_pausekort
+from logic import hent_ai_variant, vis_pausekort  # ✅ riktig
+
 from data import vis_statistikk
 from i18n import hent_tekst
 from config import ikon_urls

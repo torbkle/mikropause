@@ -4,18 +4,20 @@ import requests
 
 st.set_page_config(page_title="Mikropause", page_icon="🧘", layout="centered")
 
-# Stil for mobilvennlig layout
+# Mørk stil
 st.markdown("""
     <style>
     html, body {
+        background-color: #121212;
+        color: #E0E0E0;
         overflow-x: hidden;
     }
     .pausekort {
-        background-color: #F1F8F9;
+        background-color: #1E1E1E;
         padding: 24px;
         border-radius: 12px;
         margin-bottom: 24px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
     .ikon {
         width: 48px;
@@ -25,13 +27,19 @@ st.markdown("""
     .pausevalg {
         font-size: 20px;
         font-weight: 600;
-        color: #005F73;
+        color: #90CAF9;
     }
     .stButton>button {
         font-size: 18px;
         padding: 12px 24px;
         width: 100%;
         border-radius: 8px;
+        background-color: #263238;
+        color: #E0E0E0;
+        border: none;
+    }
+    .stButton>button:hover {
+        background-color: #37474F;
     }
     </style>
 """, unsafe_allow_html=True)

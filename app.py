@@ -60,17 +60,24 @@ lyd_urls = {
     "Bevegelse": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/audio/bevegelse.mp3"
 }
 
-def spill_lyd(url):
+# Automatisk lydavspilling med fallback
+def spill_autolyd(url):
     try:
         response = requests.head(url)
         if response.status_code == 200:
-            st.audio(url)
+            html = f"""
+            <audio autoplay>
+                <source src="{url}" type="audio/mp3">
+                Din nettleser støtter ikke lydavspilling.
+            </audio>
+            """
+            st.markdown(html, unsafe_allow_html=True)
         else:
             st.warning("🔇 Lydfilen kunne ikke lastes. Prøv igjen senere.")
     except Exception:
         st.warning("🔇 Lydstøtte er ikke tilgjengelig akkurat nå.")
 
-# Pausekort med lyd og fallback
+# Pausekort med autoplay
 if st.button("Start pause"):
     st.markdown("---")
     st.markdown('<div class="pausekort">', unsafe_allow_html=True)
@@ -78,19 +85,19 @@ if st.button("Start pause"):
     if "Pust" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Pust"]}" class="ikon"> <span class="pausevalg">Pustepause</span>', unsafe_allow_html=True)
         st.markdown("🫁 Pust inn i 4 sekunder, hold i 4, pust ut i 6. Gjenta i 1 minutt.")
-        spill_lyd(lyd_urls["Pust"])
+        spill_autolyd(lyd_urls["Pust"])
     elif "Skjermpause" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Skjermpause"]}" class="ikon"> <span class="pausevalg">Skjermpause</span>', unsafe_allow_html=True)
         st.markdown("👀 Se ut av vinduet i 60 sekunder. La øynene hvile.")
-        spill_lyd(lyd_urls["Skjermpause"])
+        spill_autolyd(lyd_urls["Skjermpause"])
     elif "Fokus" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Fokus"]}" class="ikon"> <span class="pausevalg">Fokuspause</span>', unsafe_allow_html=True)
         st.markdown("🔕 Lukk alle faner. Sett en intensjon for neste oppgave.")
-        spill_lyd(lyd_urls["Fokus"])
+        spill_autolyd(lyd_urls["Fokus"])
     elif "Bevegelse" in pausevalg:
         st.markdown(f'<img src="{ikon_urls["Bevegelse"]}" class="ikon"> <span class="pausevalg">Bevegelsespause</span>', unsafe_allow_html=True)
         st.markdown("🧍‍♂️ Strekk armene over hodet og rull skuldrene. 3 ganger.")
-        spill_lyd(lyd_urls["Bevegelse"])
+        spill_autolyd(lyd_urls["Bevegelse"])
 
     st.markdown('</div>', unsafe_allow_html=True)
 

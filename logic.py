@@ -1,13 +1,13 @@
 import streamlit as st
-import openai
+from openai import OpenAI
 
-# 🔐 Hent API-nøkkel fra Streamlit Secrets
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+# 🔐 Initialiser OpenAI-klienten med API-nøkkel fra Streamlit Secrets
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 def hent_ai_variant(pausetype):
     """Returnerer AI-generert instruksjon basert på valgt pausetype."""
     prompt = f"Gi en kort, vennlig instruksjon for en mikropause med fokus på {pausetype.lower()}."
-    response = openai.ChatCompletion.create(
+    response = client.chat.completions.create(
         model="gpt-3.5-turbo",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.7,

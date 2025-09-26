@@ -7,5 +7,5 @@ Mikropause er en lavterskel app som gir brukere korte, tilpassede pauser i løpe
 - Pausebibliotek med pust, skjermpause og bevegelse
 - Daglig statistikk og innsikt
 
-Utviklet av Torbjørn Kleiven - [Infera](https://www.infera.no).
+Utviklet av Torbjørn Kleiven(mailto:torbjorn.kleiven@infera.no) - [Infera](https://www.infera.no).
 

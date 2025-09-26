@@ -3,6 +3,8 @@ from ui import sett_stil, vis_header
 from logic import hent_ai_anbefaling, vis_pausekort
 from data import vis_statistikk
 from i18n import hent_tekst
+from config import lyd_urls
+
 
 sett_stil(mørk=True)
 vis_header()

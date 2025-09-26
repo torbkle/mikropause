@@ -15,7 +15,8 @@ språk = st.selectbox("Språk / Language", ["Norsk", "English"])
 tekst = hent_tekst(språk)
 
 # 🤖 AI-basert anbefaling
-st.info(hent_ai_anbefaling())
+st.info(hent_ai_variant())
+
 
 # 🧘 Pausevalg
 st.markdown(f"### {tekst['valg']}")

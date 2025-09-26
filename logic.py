@@ -40,9 +40,29 @@ def spill_autolyd(lydfil_url):
 
 
 def vis_pausekort(pausetype, ikon_url):
-    """Viser pausekort med ikon, instruksjon og lyd – lyd spilles alltid."""
+    """Viser pausekort med ikon, instruksjon, lyd og animasjon."""
     st.image(ikon_url, width=100)
     instruksjon = hent_ai_variant(pausetype)
     st.markdown(f"### {instruksjon}")
+
+    # 🔊 Spill lyd
     lyd_url = f"https://torbkle.github.io/mikropause-assets/audio/{pausetype.lower()}.mp3"
     spill_autolyd(lyd_url)
+
+    # 🌊 Visuell indikator
+    st.markdown(
+        """
+        <div style="text-align:center; margin-top:20px;">
+            <div style="width:40px; height:40px; border-radius:50%; background:#4CAF50; animation:pulse 1.5s infinite;"></div>
+        </div>
+        <style>
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.5); opacity: 0.5; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+

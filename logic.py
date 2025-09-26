@@ -3,7 +3,7 @@ import openai
 from config import lyd_urls
 
 openai.api_key = st.secrets["OPENAI_API_KEY"]
-hent_ai_anbefaling = hent_ai_variant
+
 
 def hent_ai_variant(pausetype):
     """Genererer en ny pauseinstruksjon basert på valgt type."""
@@ -19,6 +19,7 @@ def hent_ai_variant(pausetype):
             temperature=0.7
         )
         return response.choices[0].message.content.strip()
+        hent_ai_anbefaling = hent_ai_variant
     except Exception as e:
         return "🧘 Ta en kort pause. (AI-feil)"
 

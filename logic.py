@@ -27,25 +27,17 @@ def hent_ai_variant(pausetype):
         return fallback_instruksjoner.get(pausetype, "Ta en kort pause og pust dypt.")
 
 def spill_autolyd(lydfil_url):
-    """Spiller av lyd automatisk med synlig spiller og JS fallback."""
+    """Spiller av lyd med synlig spiller og autoplay – uten JS."""
     st.markdown(
         f"""
-        <audio id="mikropauseAudio" autoplay>
+        <audio controls autoplay>
             <source src="{lydfil_url}" type="audio/mpeg">
             Nettleseren din støtter ikke lydavspilling.
         </audio>
-        <script>
-            var audio = document.getElementById("mikropauseAudio");
-            if (audio) {{
-                audio.play().catch(function(error) {{
-                    console.log("Autoplay blokkert, viser spiller.");
-                    audio.setAttribute("controls", "true");
-                }});
-            }}
-        </script>
         """,
         unsafe_allow_html=True
     )
+
 
 def vis_pausekort(pausetype, ikon_url):
     """Viser pausekort med ikon, instruksjon og lyd – lyd spilles alltid."""

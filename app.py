@@ -41,31 +41,38 @@ else:
     anbefaling = "🌇 Avslutt dagen med en mikrobevegelse"
 st.info(anbefaling)
 
-# Pausevalg med ikoner
+# Pausevalg
 st.markdown("### Velg type mikropause:")
-
 pausevalg = st.radio(
     "",
     ["🫁 Pust", "👀 Skjermpause", "🔕 Fokus", "🧍‍♂️ Bevegelse"],
     label_visibility="collapsed"
 )
 
-# Vis pausekort
+# Eksterne ikoner via GitHub CDN
+ikon_urls = {
+    "Pust": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/wind.svg",
+    "Skjermpause": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/eye-off.svg",
+    "Fokus": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/target.svg",
+    "Bevegelse": "https://raw.githubusercontent.com/torbkle/mikropause/main/assets/icons/stretch-horizontal.svg"
+}
+
+# Pausekort
 if st.button("Start pause"):
     st.markdown("---")
     st.markdown('<div class="pausekort">', unsafe_allow_html=True)
 
     if "Pust" in pausevalg:
-        st.markdown('<img src="assets/icons/wind.svg" class="ikon"> <span class="pausevalg">Pustepause</span>', unsafe_allow_html=True)
+        st.markdown(f'<img src="{ikon_urls["Pust"]}" class="ikon"> <span class="pausevalg">Pustepause</span>', unsafe_allow_html=True)
         st.markdown("🫁 Pust inn i 4 sekunder, hold i 4, pust ut i 6. Gjenta i 1 minutt.")
     elif "Skjermpause" in pausevalg:
-        st.markdown('<img src="assets/icons/eye-off.svg" class="ikon"> <span class="pausevalg">Skjermpause</span>', unsafe_allow_html=True)
+        st.markdown(f'<img src="{ikon_urls["Skjermpause"]}" class="ikon"> <span class="pausevalg">Skjermpause</span>', unsafe_allow_html=True)
         st.markdown("👀 Se ut av vinduet i 60 sekunder. La øynene hvile.")
     elif "Fokus" in pausevalg:
-        st.markdown('<img src="assets/icons/target.svg" class="ikon"> <span class="pausevalg">Fokuspause</span>', unsafe_allow_html=True)
+        st.markdown(f'<img src="{ikon_urls["Fokus"]}" class="ikon"> <span class="pausevalg">Fokuspause</span>', unsafe_allow_html=True)
         st.markdown("🔕 Lukk alle faner. Sett en intensjon for neste oppgave.")
     elif "Bevegelse" in pausevalg:
-        st.markdown('<img src="assets/icons/stretch-horizontal.svg" class="ikon"> <span class="pausevalg">Bevegelsespause</span>', unsafe_allow_html=True)
+        st.markdown(f'<img src="{ikon_urls["Bevegelse"]}" class="ikon"> <span class="pausevalg">Bevegelsespause</span>', unsafe_allow_html=True)
         st.markdown("🧍‍♂️ Strekk armene over hodet og rull skuldrene. 3 ganger.")
 
     st.markdown('</div>', unsafe_allow_html=True)

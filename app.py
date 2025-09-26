@@ -4,25 +4,34 @@ import requests
 
 st.set_page_config(page_title="Mikropause", page_icon="🧘", layout="centered")
 
-# Stil
+# Stil for mobilvennlig layout
 st.markdown("""
     <style>
+    html, body {
+        overflow-x: hidden;
+    }
     .pausekort {
         background-color: #F1F8F9;
-        padding: 20px;
-        border-radius: 10px;
-        margin-bottom: 20px;
+        padding: 24px;
+        border-radius: 12px;
+        margin-bottom: 24px;
         box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
     .ikon {
-        width: 40px;
+        width: 48px;
         vertical-align: middle;
-        margin-right: 10px;
+        margin-right: 12px;
     }
     .pausevalg {
-        font-size: 18px;
-        font-weight: 500;
+        font-size: 20px;
+        font-weight: 600;
         color: #005F73;
+    }
+    .stButton>button {
+        font-size: 18px;
+        padding: 12px 24px;
+        width: 100%;
+        border-radius: 8px;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -43,7 +52,11 @@ st.info(anbefaling)
 
 # Pausevalg
 st.markdown("### Velg type mikropause:")
-pausevalg = st.radio("", ["🫁 Pust", "👀 Skjermpause", "🔕 Fokus", "🧍‍♂️ Bevegelse"], label_visibility="collapsed")
+pausevalg = st.radio(
+    "",
+    ["🫁 Pust", "👀 Skjermpause", "🔕 Fokus", "🧍‍♂️ Bevegelse"],
+    label_visibility="collapsed"
+)
 
 # Ikoner og lydfiler via GitHub CDN
 ikon_urls = {
@@ -70,6 +83,9 @@ def spill_autolyd(url):
                 <source src="{url}" type="audio/mp3">
                 Din nettleser støtter ikke lydavspilling.
             </audio>
+            <script>
+                window.scrollTo({{ top: document.body.scrollHeight, behavior: 'smooth' }});
+            </script>
             """
             st.markdown(html, unsafe_allow_html=True)
         else:
@@ -77,7 +93,7 @@ def spill_autolyd(url):
     except Exception:
         st.warning("🔇 Lydstøtte er ikke tilgjengelig akkurat nå.")
 
-# Pausekort med autoplay
+# Pausekort med autoplay og auto-scroll
 if st.button("Start pause"):
     st.markdown("---")
     st.markdown('<div class="pausekort">', unsafe_allow_html=True)
